@@ -28,6 +28,25 @@ Netual language model, 使用词的分布式表示对自然语言序列建模
 文本生成  
 
 
+Pact
 
+prompt生成大模型
+
+看国外的公开课 LLM
+
+https://github.com/datawhalechina/llm-cookbook
+* [面向开发者的大模型手册 - LLM Cookbook
+项目简介](https://datawhalechina.github.io/llm-cookbook/#/)
+
+
+https://zhuanlan.zhihu.com/p/634545092
+
+UML 和 流程图
+
+* [Huggingtace](https://huggingface.co/)
+
+大模型的"token"是指在自然语言处理（NLP）任务中，模型所使用的输入数据的最小单元。这些token可以是单词、子词或字符等，具体取决于模型的设计和训练方式。
+
+tokenization 标记化
 
 
