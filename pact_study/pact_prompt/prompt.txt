@@ -1,0 +1,182 @@
+请根据给定的API信息生成一组测试用例。API信息如下：
+
+- URL: `/api/users/getInfo`
+- 请求方式: `POST`
+- 请求参数:
+  - 参数名称: `userId`, 类型: `string`, 是否可选: 不可选
+  - 参数名称: `includeDetails`, 类型: `boolean`, 是否可选: 可选
+- 响应体:
+  - 状态码: `200 OK`, 说明: 请求成功
+    - 响应体示例:
+      ```json
+      {
+        "status": "success",
+        "data": {
+          "userId": "12345",
+          "name": "张三",
+          "email": "zhangsan@example.com",
+          "details": {
+            "age": 30,
+            "address": "北京市"
+          }
+        }
+      }
+      ```
+  - 状态码: `400 Bad Request`, 说明: 请求参数不合法
+    - 响应体示例:
+      ```json
+      {
+        "status": "error",
+        "message": "Invalid request body"
+      }
+      ```
+  - 状态码: `404 Not Found`, 说明: 请求的用户不存在
+    - 响应体示例:
+      ```json
+      {
+        "status": "error",
+        "message": "User not found"
+      }
+      ```
+  - 状态码: `500 Internal Server Error`, 说明: 服务器内部错误
+    - 响应体示例:
+      ```json
+      {
+        "status": "error",
+        "message": "Server error"
+      }
+      ```
+API代码信息如下：
+
+```python
+"""pact test for user service client"""
+
+import json
+import logging
+import os
+import sys
+
+import pytest
+import requests
+from requests.auth import HTTPBasicAuth
+
+from pact_python_demo.client import UserClient
+from pact import Consumer, Like, Provider, Term
+
+log = logging.getLogger(__name__)
+logging.basicConfig(level=logging.INFO)
+
+
+PACT_UPLOAD_URL = (
+    "http://127.0.0.1/pacts/provider/UserService/consumer"
+    "/UserServiceClient/version"
+)
+PACT_FILE = "userserviceclient-userservice.json"
+PACT_BROKER_USERNAME = "pactbroker"
+PACT_BROKER_PASSWORD = "pactbroker"
+
+PACT_MOCK_HOST = 'localhost'
+PACT_MOCK_PORT = 1234
+PACT_DIR = os.path.dirname(os.path.realpath(__file__))
+
+@pytest.fixture
+def client():
+    return UserClient(
+        'http://{host}:{port}'
+        .format(host=PACT_MOCK_HOST, port=PACT_MOCK_PORT)
+    )
+
+
+def push_to_broker(version):
+    """TODO: see if we can dynamically learn the pact file name, version, etc."""
+    with open(os.path.join(PACT_DIR, PACT_FILE), 'rb') as pact_file:
+        pact_file_json = json.load(pact_file)
+
+    basic_auth = HTTPBasicAuth(PACT_BROKER_USERNAME, PACT_BROKER_PASSWORD)
+
+    log.info("Uploading pact file to pact broker...")
+
+    r = requests.put(
+        "{}/{}".format(PACT_UPLOAD_URL, version),
+        auth=basic_auth,
+        json=pact_file_json
+    )
+    if not r.ok:
+        log.error("Error uploading: %s", r.content)
+        r.raise_for_status()
+
+
+@pytest.fixture(scope='session')
+def pact(request):
+    pact = Consumer('UserServiceClient').has_pact_with(
+        Provider('UserService'), host_name=PACT_MOCK_HOST, port=PACT_MOCK_PORT,
+        pact_dir=PACT_DIR)
+    pact.start_service()
+    yield pact
+    pact.stop_service()
+
+    version = request.config.getoption('--publish-pact')
+    if not request.node.testsfailed and version:
+        push_to_broker(version)
+
+
+def test_get_user_non_admin(pact, client):
+    expected = {
+        'name': 'UserA',
+        'id': Term(
+            r'^[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}\Z',
+            '00000000-0000-4000-a000-000000000000'
+        ),
+        'created_on': Term(
+            r'\d+-\d+-\d+T\d+:\d+:\d+',
+            '2016-12-15T20:16:01'
+        ),
+        'admin': False
+    }
+
+    (pact
+     .given('UserA exists and is not an administrator')
+     .upon_receiving('a request for UserA')
+     .with_request('get', '/users/UserA')
+     .will_respond_with(200, body=Like(expected)))
+
+    with pact:
+        result = client.get_user('UserA')
+
+    # assert something with the result, for ex, did I process 'result' properly?
+    # or was I able to deserialize correctly? etc.
+
+
+def test_get_non_existing_user(pact, client):
+    (pact
+     .given('UserA does not exist')
+     .upon_receiving('a request for UserA')
+     .with_request('get', '/users/UserA')
+     .will_respond_with(404))
+
+    with pact:
+        result = client.get_user('UserA')
+
+    assert result is None
+
+class UserClient(object):
+    def __init__(self, base_uri):
+        self.base_uri = base_uri
+
+    def get_user(self, user_name):
+        """Fetch a user object by user_name from the server."""
+        uri = self.base_uri + '/users/' + user_name
+        response = requests.get(uri)
+        if response.status_code == 404:
+            return None
+        return response.json()
+```
+
+请生成以下几种情况的测试用例：
+1. 成功获取用户信息（包括用户详情）
+2. 成功获取用户信息（不包括用户详情）
+3. 用户ID无效时的错误响应
+4. 请求参数缺失时的错误响应
+5. 服务器内部错误响应
+
+请确保测试用例覆盖了所有提供的状态码，并且每个测试用例都包含请求和预期的响应。
