@@ -49,4 +49,10 @@ UML 和 流程图
 
 tokenization 标记化
 
+https://kubernetes.io/
 
+
+找个环境实操k8s
+
+
+https://github.com/guangzhengli/k8s-tutorials?tab=readme-ov-file#pod-%E4%B8%8E-container-%E7%9A%84%E4%B8%8D%E5%90%8C
