@@ -20,6 +20,7 @@
     "@vuepress/plugin-notice": "^2.0.0-rc.57",
     "@vuepress/plugin-photo-swipe": "^2.0.0-rc.57",
     "@vuepress/plugin-pwa": "^2.0.0-rc.57",
+    "@vuepress/plugin-redirect": "^2.0.0-rc.57",
     "@vuepress/plugin-seo": "^2.0.0-rc.57",
     "@vuepress/plugin-watermark": "^2.0.0-rc.57",
     "@vuepress/theme-default": "^2.0.0-rc.58",

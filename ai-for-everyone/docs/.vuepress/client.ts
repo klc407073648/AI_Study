@@ -4,7 +4,8 @@ import Category from './layouts/Category.vue'
 import Tag from './layouts/Tag.vue'
 import Timeline from './layouts/Timeline.vue'
 
-export default defineClientConfig({
+export default defineClientConfig(
+  {
   // we provide some blog layouts
   layouts: {
     Article,
@@ -13,3 +14,4 @@ export default defineClientConfig({
     Timeline,
   },
 })
+
