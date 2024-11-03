@@ -1,20 +1,11 @@
 export const enNavbarConfig = [
-  "/",
   {
-    text: "Article",
-    link: "/article/",
+    text: "Group1",
+    link: "guide/interface/icon.md",
   },
   {
-    text: "Category",
-    link: "/category/",
-  },
-  {
-    text: "Tag",
-    link: "/tag/",
-  },
-  {
-    text: "Timeline",
-    link: "/timeline/",
+    text: "Group2",
+    link: "guide/interface/others.md",
   },
   {
     text: 'Group',
@@ -22,10 +13,10 @@ export const enNavbarConfig = [
     children: [
       {
         text: 'SubGroup1',
-        prefix: 'interface/',
+        prefix: 'intro/',
         children: [
-          'icon.md', // 解析为 `/guide/group/sub1/bar.md`
-          'others.md', // 解析为 `/guide/group/sub1/bar.md`
+          'install.md', // 解析为 `/guide/group/sub1/bar.md`
+          'intro.md', // 解析为 `/guide/group/sub1/bar.md`
         ],
       }
     ],
