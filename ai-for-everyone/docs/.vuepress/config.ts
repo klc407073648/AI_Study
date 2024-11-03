@@ -15,6 +15,14 @@ import { defineWatermarkConfig } from "@vuepress/plugin-watermark/client"; ///TO
 import { pwaPlugin } from "@vuepress/plugin-pwa";
 import { redirectPlugin } from "@vuepress/plugin-redirect";
 //plugin
+//nav
+import {
+  enNavbarConfig,
+  zhNavbarConfig,
+  enSidebarConfig,
+  zhSidebarConfig,
+} from './config/index'
+//nav
 
 export default defineUserConfig({
   locales: {
@@ -35,48 +43,14 @@ export default defineUserConfig({
       "/": {
         selectLanguageText: "English",
         selectLanguageName: "English",
-        navbar: [
-          "/",
-          {
-            text: "Article",
-            link: "/article/",
-          },
-          {
-            text: "Category",
-            link: "/category/",
-          },
-          {
-            text: "Tag",
-            link: "/tag/",
-          },
-          {
-            text: "Timeline",
-            link: "/timeline/",
-          },
-        ],
+        navbar: enNavbarConfig,
+        //sidebar: enSidebarConfig,
       },
       "/zh/": {
         selectLanguageText: "简体中文",
         selectLanguageName: "简体中文",
-        navbar: [
-          "/zh",
-          {
-            text: "Article",
-            link: "/article/",
-          },
-          {
-            text: "Category",
-            link: "/category/",
-          },
-          {
-            text: "Tag",
-            link: "/tag/",
-          },
-          {
-            text: "Timeline",
-            link: "/timeline/",
-          },
-        ],
+        navbar: zhNavbarConfig,
+        //sidebar: zhSidebarConfig,
       },
     },
   }),
