@@ -1,22 +1,40 @@
 export const zhNavbarConfig = [
   {
-    text: "Group1",
-    link: "/zh/guide/interface/icon.md",
-  },
-  {
-    text: "Group2",
-    link: "/zh/guide/interface/others.md",
-  },
-  {
-    text: 'Group',
+    text: '指南',
     prefix: '/zh/guide/',
     children: [
       {
-        text: 'SubGroup1',
+        text: '指南内容',
         prefix: 'intro/',
         children: [
-          'install.md', // 解析为 `/zh/guide/group/sub1/bar.md`
-          'intro.md', // 解析为 `/zh/guide/group/sub1/bar.md`
+          {
+            text: "安装",
+            link: "install",
+          },
+          {
+            text: "介绍",
+            link: "intro",
+          },
+        ],
+      }
+    ],
+  },
+  {
+    text: '接口',
+    prefix: '/zh/interface/',
+    children: [
+      {
+        text: '接口内容',
+        prefix: 'intro/',
+        children: [
+          {
+            text: "图标",
+            link: "icon.md",
+          },
+          {
+            text: "其他",
+            link: "others.md",
+          },
         ],
       }
     ],

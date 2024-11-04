@@ -1,22 +1,40 @@
 export const enNavbarConfig = [
   {
-    text: "Group1",
-    link: "guide/interface/icon.md",
-  },
-  {
-    text: "Group2",
-    link: "guide/interface/others.md",
-  },
-  {
-    text: 'Group',
-    prefix: 'guide/',
+    text: 'Guide',
+    prefix: '/guide/',
     children: [
       {
-        text: 'SubGroup1',
+        text: 'Guide Content',
         prefix: 'intro/',
         children: [
-          'install.md', // 解析为 `/guide/group/sub1/bar.md`
-          'intro.md', // 解析为 `/guide/group/sub1/bar.md`
+          {
+            text: "Install",
+            link: "install",
+          },
+          {
+            text: "Intro",
+            link: "intro",
+          },
+        ],
+      }
+    ],
+  },
+  {
+    text: 'Interface',
+    prefix: '/zh/interface/',
+    children: [
+      {
+        text: 'Interface Content',
+        prefix: 'intro/',
+        children: [
+          {
+            text: "Icon",
+            link: "icon.md",
+          },
+          {
+            text: "Others",
+            link: "others.md",
+          },
         ],
       }
     ],

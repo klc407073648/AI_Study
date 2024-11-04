@@ -1,1 +1,1 @@
-## 中文 install
+## 中文指南 install
