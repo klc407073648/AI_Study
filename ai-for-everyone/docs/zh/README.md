@@ -4,11 +4,11 @@ title: 首页
 heroImage: https://vuejs.press/images/hero.png
 actions:
   - text: 快速开始
-    link: /get-started.html
+    link: /zh/get-started.html
     type: primary
 
   - text: 介绍
-    link: /introduction.html
+    link: /zh/introduction.html
     type: secondary
 
 features:

@@ -28,13 +28,13 @@ export default defineUserConfig({
   locales: {
     "/": {
       lang: "en-US",
-      title: "VuePress",
-      description: "My first VuePress Site",
+      title: "AI Knowledge Sharing",
+      description: "Share various knowledge in the process of AI learning",
     },
     "/zh/": {
       lang: "zh-CN",
-      title: "博客演示",
-      description: "vuepress-theme-hope 的博客演示",
+      title: "AI知识分享",
+      description: "分享AI学习过程中的各种知识",
     },
   },
   theme: defaultTheme({
