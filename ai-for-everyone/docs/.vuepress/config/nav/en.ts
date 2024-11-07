@@ -1,42 +1,35 @@
+import {
+  en_detail_basic,
+  en_detail_resource,
+  en_detail_trend,
+  en_detail_framework,
+  en_detail_application,
+} from "./en_detail";
+
 export const enNavbarConfig = [
   {
-    text: 'Guide',
-    prefix: '/guide/',
-    children: [
-      {
-        text: 'Guide Content',
-        prefix: 'intro/',
-        children: [
-          {
-            text: "Install",
-            link: "install",
-          },
-          {
-            text: "Intro",
-            link: "intro",
-          },
-        ],
-      }
-    ],
+    text: "AI Basic knowledge",
+    prefix: "/basic/",
+    children: en_detail_basic,
   },
   {
-    text: 'Interface',
-    prefix: '/zh/interface/',
-    children: [
-      {
-        text: 'Interface Content',
-        prefix: 'intro/',
-        children: [
-          {
-            text: "Icon",
-            link: "icon.md",
-          },
-          {
-            text: "Others",
-            link: "others.md",
-          },
-        ],
-      }
-    ],
+    text: "AI Research&Tech Trends",
+    prefix: "/trend/",
+    children: en_detail_trend,
   },
-]
+  {
+    text: "AI Tools and frameworks",
+    prefix: "/framework/",
+    children: en_detail_framework,
+  },
+  {
+    text: "AI Applications",
+    prefix: "/application/",
+    children: en_detail_application,
+  },
+  {
+    text: "AI Resource",
+    prefix: "/resource/",
+    children: en_detail_resource,
+  },
+];

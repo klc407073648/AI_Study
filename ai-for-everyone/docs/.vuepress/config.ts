@@ -45,12 +45,14 @@ export default defineUserConfig({
         selectLanguageName: "English",
         navbar: enNavbarConfig,
         sidebar: enSidebarConfig,
+        sidebarDepth: 0, 
       },
       "/zh/": {
         selectLanguageText: "简体中文",
         selectLanguageName: "简体中文",
         navbar: zhNavbarConfig,
         sidebar: zhSidebarConfig,
+        sidebarDepth: 0, //设置根据页面标题自动生成的侧边栏的最大深度。设为 0 来禁用所有级别的页面标题, 设为 1 来包含 <h2> 标题。
       },
     },
   }),

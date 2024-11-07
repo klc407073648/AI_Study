@@ -1,1 +1,0 @@
-## Chinese interface icon
