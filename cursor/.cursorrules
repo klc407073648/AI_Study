@@ -1,0 +1,333 @@
+# Angular前端项目开发规则
+
+## 项目结构
+- 这是一个Angular前端项目
+- 使用TypeScript作为主要开发语言
+- 遵循Angular CLI项目结构规范
+- 主要目录结构：src/app, src/assets, src/environments等
+
+## 代码规范
+
+### TypeScript
+- 使用严格的TypeScript配置
+- 优先使用接口(interface)定义类型
+- 使用类型注解，避免any类型
+- 遵循Angular命名约定：组件使用PascalCase，服务使用camelCase
+
+### Angular组件开发
+- 组件应该遵循单一职责原则
+- 使用OnPush变更检测策略提高性能
+- 组件输入使用@Input()装饰器
+- 组件输出使用@Output()装饰器
+- 生命周期钩子按正确顺序使用
+- 使用trackBy函数优化*ngFor性能
+
+### 服务(Service)
+- 服务使用@Injectable()装饰器
+- 使用依赖注入管理服务实例
+- 服务应该是无状态的或管理应用状态
+- 使用Observable处理异步操作
+
+### 路由和导航
+- 使用Angular Router进行路由管理
+- 实现路由守卫保护敏感页面
+- 使用懒加载优化应用性能
+- 路由参数使用强类型定义
+
+### 表单处理
+- 优先使用响应式表单(Reactive Forms)
+- 使用FormBuilder创建表单控件
+- 实现表单验证和错误处理
+- 使用自定义验证器处理复杂验证逻辑
+
+### HTTP客户端
+- 使用HttpClient进行API调用
+- 实现错误处理和重试机制
+- 使用拦截器处理认证和通用逻辑
+- 返回类型使用泛型定义
+
+### 状态管理
+- 对于复杂应用考虑使用NgRx
+- 使用BehaviorSubject管理组件间通信
+- 避免直接在组件中修改共享状态
+
+### 样式和UI
+- 使用Angular Material或类似的UI组件库
+- 遵循响应式设计原则
+- 使用CSS变量管理主题
+- 组件样式使用ViewEncapsulation
+
+### 测试
+- 为组件、服务和管道编写单元测试
+- 使用Jest或Jasmine作为测试框架
+- 编写集成测试验证组件交互
+- 保持测试覆盖率在80%以上
+
+## 开发最佳实践
+
+### 性能优化
+- 使用OnPush变更检测策略
+- 实现虚拟滚动处理大量数据
+- 使用lazy loading延迟加载模块
+- 优化bundle大小，使用tree shaking
+
+### 安全性
+- 防止XSS攻击，使用Angular内置的DOM sanitization
+- 实现CSRF保护
+- 使用HTTPS进行API通信
+- 验证和清理用户输入
+
+### 可访问性
+- 使用语义化HTML元素
+- 添加适当的ARIA标签
+- 确保键盘导航支持
+- 提供屏幕阅读器支持
+
+### 错误处理
+- 实现全局错误处理器
+- 使用try-catch处理异步操作
+- 提供用户友好的错误消息
+- 记录错误信息用于调试
+
+### 代码组织
+- 使用barrel exports组织模块导出
+- 按功能模块组织代码结构
+- 使用路径别名简化导入语句
+- 保持组件文件大小适中(<400行)
+
+## 工具和配置
+
+### 代码质量
+- 使用ESLint和Prettier格式化代码
+- 配置Husky进行pre-commit检查
+- 使用Angular CLI的lint命令检查代码质量
+- 遵循Angular风格指南
+
+### 构建和部署
+- 使用Angular CLI进行构建
+- 配置不同环境的构建配置
+- 使用PWA功能提升用户体验
+- 实现CI/CD流水线
+
+## 响应式设计
+- 使用Angular Flex Layout或CSS Grid
+- 实现移动端优先的设计
+- 测试不同屏幕尺寸的兼容性
+- 使用响应式图片和媒体查询
+
+## 国际化
+- 使用Angular i18n进行国际化
+- 支持多语言切换
+- 处理RTL语言支持
+- 本地化日期、数字和货币格式
+
+## 调试和开发
+- 使用Angular DevTools进行调试
+- 利用浏览器开发者工具
+- 使用console.log进行临时调试
+- 实现日志服务记录应用行为
+
+## 代码注释和文档
+- 为复杂逻辑添加注释
+- 使用JSDoc注释公共API
+- 保持README文件更新
+- 编写组件使用示例
+
+## 代码示例和模板
+
+### 组件模板示例
+```typescript
+// 基础组件结构
+@Component({
+  selector: 'app-example',
+  templateUrl: './example.component.html',
+  styleUrls: ['./example.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
+})
+export class ExampleComponent implements OnInit, OnDestroy {
+  @Input() data: any;
+  @Output() dataChange = new EventEmitter<any>();
+  
+  private destroy$ = new Subject<void>();
+  
+  constructor(
+    private service: ExampleService,
+    private cdr: ChangeDetectorRef
+  ) {}
+  
+  ngOnInit(): void {
+    // 组件初始化逻辑
+  }
+  
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+}
+```
+
+### 服务模板示例
+```typescript
+// HTTP服务示例
+@Injectable({
+  providedIn: 'root'
+})
+export class ApiService {
+  private apiUrl = environment.apiUrl;
+  
+  constructor(private http: HttpClient) {}
+  
+  getData<T>(endpoint: string): Observable<T> {
+    return this.http.get<T>(`${this.apiUrl}/${endpoint}`)
+      .pipe(
+        catchError(this.handleError),
+        retry(2)
+      );
+  }
+  
+  private handleError(error: HttpErrorResponse): Observable<never> {
+    // 错误处理逻辑
+    return throwError(() => error);
+  }
+}
+```
+
+## 常见开发模式
+
+### 数据流模式
+- 使用RxJS操作符处理数据流
+- 使用async管道自动订阅和取消订阅
+- 使用combineLatest合并多个Observable
+- 使用switchMap处理依赖请求
+
+### 组件通信模式
+- 父子组件：使用@Input/@Output
+- 兄弟组件：使用服务共享状态
+- 跨层级：使用Subject或BehaviorSubject
+- 全局状态：考虑使用NgRx
+
+### 表单处理模式
+```typescript
+// 响应式表单示例
+export class FormComponent {
+  form: FormGroup;
+  
+  constructor(private fb: FormBuilder) {
+    this.form = this.fb.group({
+      name: ['', [Validators.required, Validators.minLength(2)]],
+      email: ['', [Validators.required, Validators.email]]
+    });
+  }
+  
+  onSubmit(): void {
+    if (this.form.valid) {
+      // 处理表单提交
+    }
+  }
+}
+```
+
+## 性能优化模式
+
+### 变更检测优化
+- 使用OnPush策略
+- 使用trackBy函数
+- 避免在模板中使用函数调用
+- 使用纯管道替代组件方法
+
+### 内存泄漏防护
+```typescript
+// 正确管理订阅
+export class Component implements OnDestroy {
+  private subscriptions = new Subscription();
+  
+  ngOnInit() {
+    this.subscriptions.add(
+      this.service.getData().subscribe(data => {
+        // 处理数据
+      })
+    );
+  }
+  
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
+  }
+}
+```
+
+## 错误处理和调试
+
+### 全局错误处理
+```typescript
+@Injectable()
+export class GlobalErrorHandler implements ErrorHandler {
+  handleError(error: any): void {
+    console.error('全局错误:', error);
+    // 发送错误到日志服务
+    // 显示用户友好的错误消息
+  }
+}
+```
+
+### 开发调试技巧
+- 使用Angular DevTools
+- 在组件中使用console.log进行调试
+- 使用RxJS的tap操作符调试数据流
+- 利用浏览器开发者工具的Network和Console面板
+
+## 常见反模式（避免）
+
+### 不要做的事情
+- 不要直接在模板中调用函数
+- 不要忘记取消订阅Observable
+- 不要在构造函数中进行异步操作
+- 不要使用any类型
+- 不要在组件中直接操作DOM（使用Renderer2）
+- 不要忘记实现OnDestroy接口
+
+### 避免的性能问题
+- 避免在*ngFor中使用函数
+- 避免过深的组件嵌套
+- 避免在变更检测期间修改数据
+- 避免使用过大的组件文件
+
+## 项目特定配置
+
+### 环境配置
+```typescript
+// environment.ts
+export const environment = {
+  production: false,
+  apiUrl: 'http://localhost:3000/api',
+  enableLogging: true
+};
+```
+
+### 路径别名配置
+```json
+// tsconfig.json
+{
+  "compilerOptions": {
+    "baseUrl": "src",
+    "paths": {
+      "@app/*": ["app/*"],
+      "@shared/*": ["app/shared/*"],
+      "@core/*": ["app/core/*"]
+    }
+  }
+}
+```
+
+## 代码审查检查清单
+
+### 提交前检查
+- [ ] 代码遵循TypeScript严格模式
+- [ ] 组件使用OnPush变更检测
+- [ ] 正确实现生命周期钩子
+- [ ] 使用适当的RxJS操作符
+- [ ] 添加必要的错误处理
+- [ ] 编写或更新相关测试
+- [ ] 检查控制台无错误
+- [ ] 验证响应式设计
+
+记住：始终优先考虑代码的可读性、可维护性和性能。遵循Angular官方最佳实践和社区标准。定期更新依赖和工具链，保持项目现代化。

@@ -1,6 +1,5 @@
 import requests
 
-
 class UserClient(object):
     def __init__(self, base_uri):
         self.base_uri = base_uri

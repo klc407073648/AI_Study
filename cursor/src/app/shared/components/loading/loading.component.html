@@ -1,0 +1,8 @@
+<!-- 加载组件模板 -->
+<div class="loading-container" [class.overlay]="overlay">
+  <mat-spinner [diameter]="diameter"></mat-spinner>
+  <p *ngIf="showMessage" class="loading-message">{{ message }}</p>
+</div>
+
+
+

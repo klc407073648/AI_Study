@@ -1,47 +1,51 @@
 // region config
-import {
-  en_detail_basic,
-  en_detail_resource,
-  en_detail_trend,
-  en_detail_framework,
-  en_detail_application,
-} from "../nav/en_detail";
-
 export const enSidebarConfig = {
-  '/basic/': [
+  '/guide/': [
     {
-      text: 'AI Basic knowledge',
+      text: 'Guide',
       // 相对路径会自动追加子路径前缀
       collapsible: true,
-      children: en_detail_basic,
+      children: [
+        {
+          text: 'Guide Content',
+          prefix: 'intro/',
+          children: [
+            {
+              text: "Install",
+              link: "install",
+            },
+            {
+              text: "Intro",
+              link: "intro",
+            },
+          ],
+        }
+      ],
     },
   ],
-  '/trend/': [
+  '/interface/': [
     {
-      text: "AI Research&Tech Trends",
+      text: 'Interface',
+      // 相对路径会自动追加子路径前缀
       collapsible: true,
-      children: en_detail_trend,
-    }
+      children: [
+        {
+          text: 'Interface Content',
+          prefix: 'intro/',
+          children: [
+            {
+              text: "Icon",
+              link: "icon.md",
+            },
+            {
+              text: "Others",
+              link: "others.md",
+            },
+          ],
+        }
+      ],
+    },
   ],
-  '/framework/': [
-    {
-      text: "AI Tools and frameworks",
-      collapsible: true,
-      children: en_detail_trend,
-    }
-  ],
-  '/application/': [
-    {
-      text: "AI Applications",
-      collapsible: true,
-      children: en_detail_trend,
-    }
-  ],
-  '/resource/': [
-    {
-      text: "AI Resource",
-      collapsible: true,
-      children: en_detail_trend,
-    }
-  ],
+  // '/zh/interface/icon.md': 'interface-icon',
+  // '/zh/interface/others.md': 'interface-others',
 }

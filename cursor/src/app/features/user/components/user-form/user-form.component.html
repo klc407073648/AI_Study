@@ -1,0 +1,137 @@
+<!-- 用户表单组件模板 -->
+<div class="user-form-container">
+  <!-- 表单头部 -->
+  <div class="form-header">
+    <h2 mat-dialog-title>
+      {{ isEditMode ? '编辑用户' : '添加用户' }}
+    </h2>
+    <button mat-icon-button mat-dialog-close class="close-button">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <!-- 表单内容 -->
+  <div mat-dialog-content class="form-content">
+    <form [formGroup]="userForm" (ngSubmit)="onSubmit()" novalidate>
+      <!-- 姓名字段 -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>姓名</mat-label>
+        <input 
+          matInput 
+          formControlName="name"
+          placeholder="请输入用户姓名"
+          autocomplete="name">
+        <mat-error *ngIf="hasError('name')">
+          {{ getErrorMessage('name') }}
+        </mat-error>
+      </mat-form-field>
+
+      <!-- 邮箱字段 -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>邮箱</mat-label>
+        <input 
+          matInput 
+          type="email"
+          formControlName="email"
+          placeholder="请输入邮箱地址"
+          autocomplete="email">
+        <mat-error *ngIf="hasError('email')">
+          {{ getErrorMessage('email') }}
+        </mat-error>
+      </mat-form-field>
+
+      <!-- 角色字段 -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>角色</mat-label>
+        <mat-select formControlName="role">
+          <mat-option 
+            *ngFor="let role of roleOptions" 
+            [value]="role.value">
+            {{ role.label }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="hasError('role')">
+          {{ getErrorMessage('role') }}
+        </mat-error>
+      </mat-form-field>
+
+      <!-- 状态字段 -->
+      <div class="status-field">
+        <mat-label>状态</mat-label>
+        <mat-slide-toggle 
+          formControlName="isActive"
+          color="primary">
+          {{ userForm.get('isActive')?.value ? '活跃' : '禁用' }}
+        </mat-slide-toggle>
+      </div>
+    </form>
+  </div>
+
+  <!-- 表单操作按钮 -->
+  <div mat-dialog-actions align="end" class="form-actions">
+    <!-- 加载状态 -->
+    <div *ngIf="loading" class="loading-indicator">
+      <mat-spinner diameter="20"></mat-spinner>
+      <span>{{ isEditMode ? '更新中...' : '创建中...' }}</span>
+    </div>
+
+    <!-- 操作按钮 -->
+    <div *ngIf="!loading" class="action-buttons">
+      <button 
+        mat-button 
+        type="button"
+        (click)="onCancel()"
+        class="cancel-button">
+        取消
+      </button>
+      
+      <button 
+        mat-button 
+        type="button"
+        (click)="onReset()"
+        [disabled]="!userForm.dirty"
+        class="reset-button">
+        重置
+      </button>
+      
+      <button 
+        mat-raised-button 
+        color="primary"
+        type="submit"
+        [disabled]="userForm.invalid"
+        (click)="onSubmit()"
+        class="submit-button">
+        <mat-icon>{{ isEditMode ? 'save' : 'add' }}</mat-icon>
+        {{ isEditMode ? '更新' : '创建' }}
+      </button>
+    </div>
+  </div>
+
+  <!-- 表单调试信息（仅开发环境） -->
+  <div *ngIf="!environment.production" class="debug-info">
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>调试信息</mat-panel-title>
+      </mat-expansion-panel-header>
+      
+      <div class="debug-content">
+        <h4>表单状态:</h4>
+        <ul>
+          <li>有效: {{ userForm.valid }}</li>
+          <li>无效: {{ userForm.invalid }}</li>
+          <li>已触摸: {{ userForm.touched }}</li>
+          <li>已修改: {{ userForm.dirty }}</li>
+        </ul>
+        
+        <h4>表单值:</h4>
+        <pre>{{ userForm.value | json }}</pre>
+        
+        <h4>表单错误:</h4>
+        <pre>{{ getFormErrors() | json }}</pre>
+      </div>
+    </mat-expansion-panel>
+  </div>
+</div>
+
+
+

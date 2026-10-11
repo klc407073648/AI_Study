@@ -1,0 +1,117 @@
+<!-- 用户列表组件模板 -->
+<div class="user-list-container">
+  <!-- 头部工具栏 -->
+  <div class="toolbar">
+    <div class="toolbar-left">
+      <h2>用户管理</h2>
+    </div>
+    <div class="toolbar-right">
+      <mat-form-field appearance="outline" class="search-field">
+        <mat-label>搜索用户</mat-label>
+        <input 
+          matInput 
+          placeholder="输入姓名或邮箱..."
+          (input)="onSearchInput($event)"
+          [value]="searchTerm">
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+      
+      <button 
+        mat-raised-button 
+        color="primary" 
+        (click)="openUserForm()"
+        class="add-button">
+        <mat-icon>add</mat-icon>
+        添加用户
+      </button>
+    </div>
+  </div>
+
+  <!-- 加载状态 -->
+  <div *ngIf="loading" class="loading-container">
+    <mat-spinner diameter="50"></mat-spinner>
+    <p>加载中...</p>
+  </div>
+
+  <!-- 用户列表 -->
+  <div *ngIf="!loading" class="user-list">
+    <!-- 空状态 -->
+    <div *ngIf="users.length === 0" class="empty-state">
+      <mat-icon class="empty-icon">people</mat-icon>
+      <h3>暂无用户数据</h3>
+      <p *ngIf="searchTerm">没有找到匹配的用户</p>
+      <p *ngIf="!searchTerm">点击"添加用户"按钮创建第一个用户</p>
+    </div>
+
+    <!-- 用户卡片列表 -->
+    <div *ngIf="users.length > 0" class="user-cards">
+      <mat-card 
+        *ngFor="let user of users; trackBy: trackByUserId" 
+        class="user-card">
+        
+        <mat-card-header>
+          <div mat-card-avatar class="user-avatar">
+            <img 
+              *ngIf="user.avatar" 
+              [src]="user.avatar" 
+              [alt]="user.name"
+              class="avatar-image">
+            <mat-icon 
+              *ngIf="!user.avatar" 
+              class="avatar-icon">person</mat-icon>
+          </div>
+          
+          <mat-card-title>{{ user.name }}</mat-card-title>
+          <mat-card-subtitle>{{ user.email }}</mat-card-subtitle>
+        </mat-card-header>
+
+        <mat-card-content>
+          <div class="user-info">
+            <div class="info-item">
+              <mat-icon class="info-icon">work</mat-icon>
+              <span class="info-label">角色:</span>
+              <span class="info-value">{{ getRoleDisplayText(user.role) }}</span>
+            </div>
+            
+            <div class="info-item">
+              <mat-icon class="info-icon">info</mat-icon>
+              <span class="info-label">状态:</span>
+              <span 
+                class="info-value status-badge"
+                [ngClass]="getStatusClass(user.isActive)">
+                {{ getStatusDisplayText(user.isActive) }}
+              </span>
+            </div>
+            
+            <div class="info-item">
+              <mat-icon class="info-icon">schedule</mat-icon>
+              <span class="info-label">创建时间:</span>
+              <span class="info-value">{{ user.createdAt | date:'yyyy-MM-dd HH:mm' }}</span>
+            </div>
+          </div>
+        </mat-card-content>
+
+        <mat-card-actions align="end">
+          <button 
+            mat-button 
+            color="primary"
+            (click)="openUserForm(user)">
+            <mat-icon>edit</mat-icon>
+            编辑
+          </button>
+          
+          <button 
+            mat-button 
+            color="warn"
+            (click)="deleteUser(user)">
+            <mat-icon>delete</mat-icon>
+            删除
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
+</div>
+
+
+

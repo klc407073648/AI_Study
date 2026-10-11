@@ -1,0 +1,39 @@
+<!-- 根组件模板 -->
+<div class="app-container">
+  <!-- 应用头部 -->
+  <header class="app-header">
+    <div class="header-content">
+      <h1 class="app-title">
+        <mat-icon class="title-icon">school</mat-icon>
+        {{ title }}
+      </h1>
+      
+      <nav class="app-nav">
+        <a 
+          mat-button 
+          routerLink="/users" 
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{exact: false}">
+          <mat-icon>people</mat-icon>
+          用户管理
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- 主要内容区域 -->
+  <main class="app-main">
+    <router-outlet></router-outlet>
+  </main>
+
+  <!-- 应用底部 -->
+  <footer class="app-footer">
+    <div class="footer-content">
+      <p>&copy; 2024 Angular学习项目. 基于.cursorrules规则构建.</p>
+      <p>当前路由: {{ currentRoute }}</p>
+    </div>
+  </footer>
+</div>
+
+
+
